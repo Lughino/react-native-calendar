@@ -126,11 +126,14 @@ export default class Calendar extends Component {
     return parsedDates;
   }
 
-  selectDate(date) {
+  selectDate({ date, event }) {
     if (this.props.selectedDate === undefined) {
       this.setState({ selectedMoment: date });
     }
-    this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
+    this.props.onDateSelect && this.props.onDateSelect && this.props.onDateSelect({
+      date: date ? date.format() : null,
+      event,
+    });
   }
 
   onPrev = () => {
@@ -205,7 +208,10 @@ export default class Calendar extends Component {
             isWeekend={isoWeekday === 0 || isoWeekday === 6}
             key={`${renderIndex}`}
             onPress={() => {
-              this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
+              this.selectDate({
+                date: moment(startOfArgMonthMoment).set('date', dayIndex + 1),
+                event: events && events[dayIndex],
+              });
             }}
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
