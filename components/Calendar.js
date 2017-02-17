@@ -207,6 +207,7 @@ export default class Calendar extends Component {
             startOfMonth={startOfArgMonthMoment}
             isWeekend={isoWeekday === 0 || isoWeekday === 6}
             key={`${renderIndex}`}
+            index={renderIndex}
             onPress={() => {
               this.selectDate({
                 date: moment(startOfArgMonthMoment).set('date', dayIndex + 1),
@@ -222,7 +223,7 @@ export default class Calendar extends Component {
           />
         ));
       } else {
-        days.push(<Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />);
+        days.push(<Day key={`${renderIndex}`} filler index={renderIndex} customStyle={this.props.customStyle} />);
       }
       if (renderIndex % 7 === 6) {
         weekRows.push(
