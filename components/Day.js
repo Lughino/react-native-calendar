@@ -20,6 +20,7 @@ export default class Day extends Component {
     event: PropTypes.object,
     isSelected: PropTypes.bool,
     isToday: PropTypes.bool,
+    index: PropTypes.number,
     isWeekend: PropTypes.bool,
     onPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
@@ -74,19 +75,32 @@ export default class Day extends Component {
       isSelected,
       isToday,
       showEventIndicators,
+      index,
     } = this.props;
+    
+    const dBF = Object.assign({}, customStyle.dayButtonFiller);
+    const dB = Object.assign({}, customStyle.dayButton);
+    if(dBF && dBF.borderLeftWidth)
+      dBF.borderLeftWidth = 0;
+    if(dB && dB.borderLeftWidth)
+      dB.borderLeftWidth = 0;
+    const isFirst = index % 7 === 0;
+    const dayButtonFiller = isFirst ?
+      dBF : customStyle.dayButtonFiller;
+    const dayButton = isFirst ?
+      dB : customStyle.dayButton;
 
     return filler
     ? (
         <TouchableWithoutFeedback>
-          <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
+          <View style={[styles.dayButtonFiller, dayButtonFiller]}>
             <Text style={[styles.day, customStyle.day]} />
           </View>
         </TouchableWithoutFeedback>
       )
     : (
       <TouchableOpacity onPress={this.props.onPress}>
-        <View style={[styles.dayButton, customStyle.dayButton]}>
+        <View style={[styles.dayButton, dayButton]}>
           <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
             <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
           </View>
