@@ -4,11 +4,9 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-
 import Day from './Day';
-
 import moment from 'moment';
 import styles from './styles';
 
@@ -64,8 +62,6 @@ export default class Calendar extends Component {
     eventDates: [],
     monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    nextButtonText: 'Next',
-    prevButtonText: 'Prev',
     scrollEnabled: false,
     showControls: false,
     showEventIndicators: false,
@@ -85,15 +81,15 @@ export default class Calendar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedDate && this.props.selectedDate !== nextProps.selectedDate) {
-      this.setState({selectedMoment: nextProps.selectedDate});
+    if(nextProps.selectedDate && this.props.selectedDate !== nextProps.selectedDate) {
+      this.setState({ selectedMoment: nextProps.selectedDate });
     }
   }
 
   getMonthStack(currentMonth) {
-    if (this.props.scrollEnabled) {
+    if(this.props.scrollEnabled) {
       const res = [];
-      for (let i = -VIEW_INDEX; i <= VIEW_INDEX; i++) {
+      for(let i = -VIEW_INDEX; i <= VIEW_INDEX; i++) {
         res.push(moment(currentMonth).add(i, 'month'));
       }
       return res;
@@ -101,7 +97,7 @@ export default class Calendar extends Component {
     return [moment(currentMonth)];
   }
 
- prepareEventDates(eventDates, events) {
+  prepareEventDates(eventDates, events) {
     const parsedDates = {};
 
     // Dates without any custom properties
@@ -109,17 +105,19 @@ export default class Calendar extends Component {
       const date = moment(event);
       const month = moment(date).startOf('month').format();
       parsedDates[month] = parsedDates[month] || {};
-      parsedDates[month][date.date() - 1] = {};
+      parsedDates[month][date.date() - 1] = [];
     });
 
     // Dates with custom properties
-    if (events) {
+    if(events) {
       events.forEach(event => {
-        if (event.date) {
-            const date = moment(event.date);
-            const month = moment(date).startOf('month').format();
-            parsedDates[month] = parsedDates[month] || {};
-            parsedDates[month][date.date() - 1] = event;
+        if(event.date) {
+          const date = moment(event.date);
+          const month = moment(date).startOf('month').format();
+          parsedDates[month] = parsedDates[month] || {};
+          parsedDates[month][date.date() - 1] =
+            parsedDates[month][date.date() - 1] || [];
+          parsedDates[month][date.date() - 1].push(event);
         }
       });
     }
@@ -127,7 +125,7 @@ export default class Calendar extends Component {
   }
 
   selectDate({ date, event }) {
-    if (this.props.selectedDate === undefined) {
+    if(this.props.selectedDate === undefined) {
       this.setState({ selectedMoment: date });
     }
     this.props.onDateSelect && this.props.onDateSelect && this.props.onDateSelect({
@@ -150,7 +148,7 @@ export default class Calendar extends Component {
 
   scrollToItem(itemIndex) {
     const scrollToX = itemIndex * this.props.width;
-    if (this.props.scrollEnabled) {
+    if(this.props.scrollEnabled) {
       this._calendar.scrollTo({ y: 0, x: scrollToX, animated: false });
     }
   }
@@ -161,15 +159,15 @@ export default class Calendar extends Component {
     const newMoment = moment(this.state.currentMonthMoment).add(currentPage - VIEW_INDEX, 'month');
     this.setState({ currentMonthMoment: newMoment });
 
-    if (currentPage < VIEW_INDEX) {
+    if(currentPage < VIEW_INDEX) {
       this.props.onSwipePrev && this.props.onSwipePrev(newMoment);
-    } else if (currentPage > VIEW_INDEX) {
+    } else if(currentPage > VIEW_INDEX) {
       this.props.onSwipeNext && this.props.onSwipeNext(newMoment);
     }
   }
 
   onWeekRowLayout = (event) => {
-    if (this.state.rowHeight !== event.nativeEvent.layout.height) {
+    if(this.state.rowHeight !== event.nativeEvent.layout.height) {
       this.setState({ rowHeight: event.nativeEvent.layout.height });
     }
   }
@@ -201,7 +199,7 @@ export default class Calendar extends Component {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
 
-      if (dayIndex >= 0 && dayIndex < argMonthDaysCount) {
+      if(dayIndex >= 0 && dayIndex < argMonthDaysCount) {
         days.push((
           <Day
             startOfMonth={startOfArgMonthMoment}
@@ -217,15 +215,16 @@ export default class Calendar extends Component {
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
-            event={events && events[dayIndex]}
+            events={events && events[dayIndex]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
           />
         ));
       } else {
-        days.push(<Day key={`${renderIndex}`} filler index={renderIndex} customStyle={this.props.customStyle} />);
+        days.push(<Day key={`${renderIndex}`} filler index={renderIndex}
+                       customStyle={this.props.customStyle}/>);
       }
-      if (renderIndex % 7 === 6) {
+      if(renderIndex % 7 === 6) {
         weekRows.push(
           <View
             key={weekRows.length}
@@ -235,19 +234,20 @@ export default class Calendar extends Component {
             {days}
           </View>);
         days = [];
-        if (dayIndex + 1 >= argMonthDaysCount) {
+        if(dayIndex + 1 >= argMonthDaysCount) {
           break;
         }
       }
       renderIndex += 1;
-    } while (true)
+    } while(true)
     const containerStyle = [styles.monthContainer, this.props.customStyle.monthContainer];
-    return <View key={argMoment.month()} style={containerStyle}>{weekRows}</View>;
+    return <View key={argMoment.month()}
+                 style={containerStyle}>{weekRows}</View>;
   }
 
   renderHeading() {
     const headings = [];
-    for (let i = 0; i < 7; i++) {
+    for(let i = 0; i < 7; i++) {
       const j = (i + this.props.weekStart) % 7;
       headings.push(
         <Text
@@ -262,7 +262,8 @@ export default class Calendar extends Component {
     }
 
     return (
-      <View style={[styles.calendarHeading, this.props.customStyle.calendarHeading]}>
+      <View
+        style={[styles.calendarHeading, this.props.customStyle.calendarHeading]}>
         {headings}
       </View>
     );
@@ -321,7 +322,8 @@ export default class Calendar extends Component {
     const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment);
 
     return (
-      <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
+      <View
+        style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
         {this.renderTopBar()}
         {this.renderHeading(this.props.titleFormat)}
         {this.props.scrollEnabled ?
