@@ -51,10 +51,12 @@ const styles = StyleSheet.create({
     width: DEVICE_WIDTH / 7,
     borderTopWidth: 1,
     borderTopColor: '#e9e9e9',
+    height: 40,
   },
   dayButtonFiller: {
     padding: 5,
     width: DEVICE_WIDTH / 7,
+    height: 40,
   },
   day: {
     fontSize: 16,
@@ -98,6 +100,11 @@ const styles = StyleSheet.create({
   },
   weekendDayText: {
     color: '#cccccc',
+  },
+  eventIndicatorsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
