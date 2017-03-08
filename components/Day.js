@@ -91,9 +91,10 @@ export default class Day extends Component {
     if(!showEventIndicators || !events)
       return null;
 
+    const evts = events.slice(0, 3);
     return (
       <View style={styles.eventIndicatorsContainer}>
-        {events.map((event, index) => {
+        {evts.map((event, index) => {
           if(!event.customComponent)
             return this.defaultIndicator(event, index);
 
