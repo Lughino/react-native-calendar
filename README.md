@@ -31,7 +31,18 @@ Portrait mode only
   titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
   today={'2016-16-05'}              // Defaults to today
   weekStart={1} // Day on which week starts 0 - Sunday, 1 - Monday, 2 - Tuesday, etc, Default: 1
+  eventsPerDay={2}                  // With this option you can control how many events render per day
 />
+```
+
+Event object properties:
+```
+{
+  id: any, // id of event (for routing purpuse)
+  date: moment | Date | string, // the date
+  customProps?: Object, // props passed to customComponent
+  customComponent?: Function, // function that contains the custom component. Is invoked with customProps and index arguments
+}
 ```
 
 ## Available custom styles
