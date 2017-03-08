@@ -10,6 +10,7 @@ import styles from './styles';
 export default class Day extends Component {
   static defaultProps = {
     customStyle: {},
+    eventsPerDay: 2,
   }
 
   static propTypes = {
@@ -23,6 +24,7 @@ export default class Day extends Component {
     isWeekend: PropTypes.bool,
     onPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
+    eventsPerDay: PropTypes.number,
   }
 
   dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
@@ -87,11 +89,11 @@ export default class Day extends Component {
   };
 
   showIndicators = () => {
-    const { events, showEventIndicators, customStyle, } = this.props;
+    const { events, showEventIndicators, customStyle, eventsPerDay, } = this.props;
     if(!showEventIndicators || !events)
       return null;
 
-    const evts = events.slice(0, 3);
+    const evts = events.slice(0, eventsPerDay);
     return (
       <View style={[styles.eventIndicatorsContainer, customStyle.eventIndicatorsContainer]}>
         {evts.map((event, index) => {
