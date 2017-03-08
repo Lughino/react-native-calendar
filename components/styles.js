@@ -102,9 +102,11 @@ const styles = StyleSheet.create({
     color: '#cccccc',
   },
   eventIndicatorsContainer: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+    minWidth: 30,
   },
 });
 
