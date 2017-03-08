@@ -56,7 +56,10 @@ export default class Day extends Component {
 
     if(isToday && !isSelected) {
       dayTextStyle.push(styles.currentDayText, customStyle.currentDayText);
-    } else if(isToday || isSelected) {
+    } else if(isToday && isSelected) {
+      dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText,
+        styles.currentDayText, customStyle.currentDayText);
+    } else if(isSelected) {
       dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText);
     } else if(isWeekend) {
       dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText);
@@ -134,7 +137,7 @@ export default class Day extends Component {
       )
       : (
         <TouchableOpacity onPress={this.props.onPress} activeOpacity={0.8}>
-          <View style={[styles.dayButton, dayButton]}>
+          <View style={[styles.dayButton, dayButton, isToday && customStyle.dayButtonToday]}>
             <View
               style={this.dayCircleStyle(isWeekend, isSelected, isToday, events)}>
               <Text
